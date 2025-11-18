@@ -10,7 +10,7 @@ namespace Planet.Data
     public class PlanetData
     {
         [Header("기본 설정")]
-        [FormerlySerializedAs("모델")]
+        [Tooltip("모델")]
         public GameObject Model;
 
         [Tooltip("이름")]

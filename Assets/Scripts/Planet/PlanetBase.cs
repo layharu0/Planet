@@ -1,6 +1,5 @@
 using Planet.Manager;
-using System.Collections;
-using System.Collections.Generic;
+using Planet.Data;
 using UnityEngine;
 
 namespace Planet.Base
@@ -24,16 +23,34 @@ namespace Planet.Base
         [SerializeField] float _siderealPeriod;
 
         float _nowAngle = 0;
+        bool _isInit = false;
 
-        public void Awake()
+        /// <summary>
+        /// 행성 데이터 초기화
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="center"></param>
+        public void Initialize(PlanetData data, Transform center)
         {
-            //초기값 설정
+            _center = center;
+            _perihelion = data.Perihelion;
+            _aphelion = data.Aphelion;
+            _perihelionAngle = data.PerihelionAngle;
+            _siderealPeriod = data.SiderealPeriod;
+
             _nowAngle = _perihelionAngle;
             transform.position = GetPosition(_nowAngle * Mathf.Deg2Rad);
+
+            _isInit = true;
         }
 
         public void Update()
         {
+            if (!_isInit)
+            {
+                return;
+            }
+
             //다음 경도 계산
             float nextAngle = _nowAngle + 360 / _siderealPeriod * Time.deltaTime * PlanetOptionManager.SpeedMultify;
 
